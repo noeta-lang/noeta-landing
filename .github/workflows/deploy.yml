@@ -1,0 +1,56 @@
+name: Build and deploy
+
+# Push to main → build the site (including the Playwright-rendered OG image)
+# and deploy the static assets to Cloudflare Workers.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache Playwright browsers
+        # Cuts ~30s off subsequent runs by reusing the chromium binary.
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ hashFiles('pnpm-lock.yaml') }}
+
+      - name: Install Chromium
+        # `playwright-core` is what's in the lockfile, so this uses the CLI
+        # shipped with the locked version. --with-deps pulls the apt packages
+        # chromium needs on ubuntu-latest; without it, launch() crashes.
+        run: pnpm exec playwright-core install --with-deps chromium
+
+      - name: Build (site + OG image)
+        run: pnpm run build
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy

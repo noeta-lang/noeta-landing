@@ -1,0 +1,259 @@
+---
+import Base from "../layouts/Base.astro";
+import CodeWindow from "../components/CodeWindow.astro";
+import { SITE } from "../lib/site";
+
+/* The hero sample: the LiveView counter from the language's own examples —
+ * reactive server-rendered HTML where the holes are signals. */
+const COUNTER = `
+count = signal(0)
+
+fn page(): Html {
+    return @html {
+        <h1>Noeta LiveView counter</h1>
+        <p>count: <b>\${count.get()}</b></p>
+        <p>doubled: <b>\${count.get() * 2}</b></p>
+        <button data-live-click="inc">+1</button>
+    }
+}
+
+fn on_event(name: string): void {
+    if name == "inc" {
+        count.update(fn(n) => n + 1)
+    }
+}
+`;
+
+/* The correctness sample: errors as data, exhaustively matched — the docs'
+ * "thirty-second taste". */
+const ORDERS = `
+enum OrderError { Empty; NegativePrice(index: int) }
+
+fn validate(items: List<Item>): Result<void, OrderError> {
+    if items.count() == 0 {
+        return Err(OrderError.Empty)
+    }
+    for (i, item) in items.enumerate() {
+        if item.price < 0 {
+            return Err(OrderError.NegativePrice(index: i))
+        }
+    }
+    return Ok()
+}
+
+echo match validate(cart) {
+    Ok()   => "ready to ship",
+    Err(e) => match e {
+        OrderError.Empty => "cart is empty",
+        OrderError.NegativePrice(i) => "item \${i}: negative",
+    },
+}
+`;
+
+const TOOLS = [
+  { cmd: "noeta lsp", desc: "Live diagnostics on keystroke, hover types, rename, inlay hints — started automatically by the editor." },
+  { cmd: "noeta dap", desc: "A full debug adapter over the production VM: breakpoints, stepping, a REPL over the paused program." },
+  { cmd: "noeta mcp", desc: "An MCP server that grounds agents in the real compiler — docs search, diagnostics, sandboxed runs." },
+  { cmd: "noeta fmt", desc: "One canonical style, with a re-parse safety check so formatting can never change meaning." },
+  { cmd: "noeta test", desc: "Tests, benches, and doc examples live next to the code in dev tiers — stripped from normal builds." },
+  { cmd: "noeta profile", desc: "Hot-function tables and flamegraphs, rendered interactively inside the editor." },
+];
+---
+
+<Base path="/">
+  <header class="site-head">
+    <div class="wrap">
+      <a class="wordmark" href="/">noeta<span class="tld">.dev</span></a>
+      <nav class="site-nav" aria-label="Site">
+        <a href={SITE.links.docs}>docs</a>
+        <a href={SITE.links.registry}>registry</a>
+        <a href={SITE.links.playground}>playground</a>
+        <a href={SITE.links.github}>github</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero wrap">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow reveal" style="--d: 0">a programming language</p>
+          <h1>
+            <span class="reveal" style="--d: 1; display: block">AI-native,</span>
+            <span class="human reveal" style="--d: 2; display: block">human-first.</span>
+          </h1>
+          <p class="dek reveal" style="--d: 3">
+            A language for shipping reactive applications as <strong>single binaries</strong> —
+            web, desktop, or service — with a type system that makes <strong>illegal states unrepresentable</strong>.
+          </p>
+          <div class="cta-row reveal" style="--d: 4">
+            <a class="btn btn-primary" href={SITE.links.docs}>Read the docs</a>
+            <a class="btn btn-ghost" href={SITE.links.playground}>Try it in the browser</a>
+          </div>
+          <p class="hero-note reveal" style="--d: 5">
+            pre-alpha — the language is built in the open
+            at <a href={SITE.links.github}>noeta-lang/noeta</a>
+          </p>
+        </div>
+        <div class="reveal" style="--d: 3">
+          <CodeWindow file="counter.noe" code={COUNTER} command="noeta serve counter.noe --watch" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">why it exists</p>
+          <h2>Built for a world where <em>agents</em> write much of the code.</h2>
+          <p class="sub">
+            The type system makes machine-written code mechanically checkable, and the toolchain
+            speaks agent natively — but every surface decision answers to human readability first.
+          </p>
+        </div>
+        <div class="principles">
+          <article class="card">
+            <span class="num">01</span>
+            <h3>Correct by construction</h3>
+            <p>
+              ADTs, <code>Result</code>-typed errors, exhaustive matching, real generics.
+              Illegal states don't compile — whether a person wrote the code or a model did.
+            </p>
+          </article>
+          <article class="card">
+            <span class="num">02</span>
+            <h3>One source of truth</h3>
+            <p>
+              The LSP, the debugger, the MCP server, and the formatter are thin adapters over the
+              same incremental compiler. Agent and editor can never disagree.
+            </p>
+          </article>
+          <article class="card">
+            <span class="num">03</span>
+            <h3>Grounded agents</h3>
+            <p>
+              <code>noeta mcp</code> answers from the real compiler, real docs, and CI-tested
+              examples — never a model's guess. Sandboxed runs mean a runaway loop is stopped,
+              never hung.
+            </p>
+          </article>
+        </div>
+        <div class="pull">
+          <blockquote>
+            "Code an agent wrote should be code you <span class="accent">want</span> to review
+            and own."
+          </blockquote>
+          <cite>the Noeta design docs</cite>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">tooling</p>
+          <h2>One binary. <em>Every</em> surface.</h2>
+          <p class="sub">
+            Language server, debugger, agent server, formatter, tests, profiler — all subcommands
+            of the one <code>noeta</code> binary, all reading the same query graph.
+          </p>
+        </div>
+        <div class="tools">
+          {
+            TOOLS.map((t) => (
+              <div class="tool">
+                <span class="cmd">$ {t.cmd}</span>
+                <p>{t.desc}</p>
+              </div>
+            ))
+          }
+        </div>
+        <div class="tool-note">
+          <span>
+            One VS Code extension installs the lot — the LSP starts automatically and the MCP
+            server auto-registers for agent mode. Claude Code needs one line:
+          </span>
+          <span class="snippet"><span class="prompt">$</span> claude mcp add noeta -- noeta mcp</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">the thirty-second taste</p>
+          <h2>Errors are <em>data</em>, and the match is exhaustive.</h2>
+          <p class="sub">
+            No exceptions to forget, no error codes to misread. If a case can happen, the compiler
+            makes you say what happens next.
+          </p>
+        </div>
+        <div class="ship">
+          <CodeWindow file="orders.noe" code={ORDERS} command="noeta run orders.noe" />
+          <div class="targets">
+            <div class="target">
+              <span class="cmd">noeta build --exe</span>
+              <p>A self-contained native executable — machine code via the JIT's compiler, unused stdlib stripped.</p>
+            </div>
+            <div class="target">
+              <span class="cmd">noeta build --wasm</span>
+              <p>A single WASI module that runs on any WASM runtime — the playground runs the whole toolchain this way.</p>
+            </div>
+            <div class="target">
+              <span class="cmd">noeta build --serve</span>
+              <p>A <code>wasi:http</code> component for the edge — the same unchanged program, no code changes.</p>
+            </div>
+            <div class="target">
+              <span class="cmd">noeta publish</span>
+              <p>Releases are SHA-pinned and provenance-signed, with every publish in a public transparency log.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">ecosystem</p>
+          <h2>Everything has a <em>home</em>.</h2>
+        </div>
+        <div class="eco">
+          <a class="card" href={SITE.links.docs}>
+            <span class="num">docs</span>
+            <h3>Learn the language</h3>
+            <p>Guides and reference for the language and toolchain — from the thirty-second taste to editions and isolates.</p>
+            <span class="dest">docs.noeta.dev</span>
+          </a>
+          <a class="card" href={SITE.links.registry}>
+            <span class="num">registry</span>
+            <h3>Share packages</h3>
+            <p>An index, not a code store: releases map to git coordinates with pinned commits, signed provenance, and a transparency log.</p>
+            <span class="dest">registry.noeta.dev</span>
+          </a>
+          <a class="card" href={SITE.links.playground}>
+            <span class="num">playground</span>
+            <h3>Try it now</h3>
+            <p>The whole toolchain compiled to WASM, running client-side in your browser. Nothing to install.</p>
+            <span class="dest">play.noeta.dev</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <span class="tagline">AI-native, <em>human-first.</em></span>
+      <nav class="foot-nav" aria-label="Footer">
+        <a href={SITE.links.docs}>docs</a>
+        <a href={SITE.links.registry}>registry</a>
+        <a href={SITE.links.playground}>playground</a>
+        <a href={SITE.links.github}>github</a>
+      </nav>
+      <p class="foot-meta">
+        Noeta is pre-alpha and built in the open — anything may change without notice.
+      </p>
+    </div>
+  </footer>
+</Base>

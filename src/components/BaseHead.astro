@@ -1,0 +1,71 @@
+---
+/* Document <head>: SEO meta, OpenGraph/Twitter cards, and Schema.org JSON-LD.
+ * The OG image is the Playwright-rendered PNG at /images/og-image.png (see
+ * scripts/build-og-image.mjs), not the /og screenshot-target route. */
+import { SITE } from "../lib/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Page path for the canonical URL, e.g. "/". */
+  path?: string;
+}
+
+const { title = SITE.title, description = SITE.description, path = "/" } = Astro.props;
+const canonical = new URL(path, SITE.url).href.replace(/\/$/, "") || SITE.url;
+
+/* Schema.org: the language as a SoftwareApplication + the site, cross-linked.
+ * "Noeta" the language is what people search for; the WebSite node feeds
+ * sitelinks. Serialized with <\/ escaped so markup can't break out. */
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": `${SITE.url}/#software`,
+      name: SITE.name,
+      description: SITE.description,
+      url: SITE.url,
+      applicationCategory: "DeveloperApplication",
+      operatingSystem: "Linux, macOS, Windows",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+      softwareHelp: { "@type": "CreativeWork", url: SITE.links.docs },
+      sameAs: [SITE.links.github, SITE.links.docs, SITE.links.registry, SITE.links.playground],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE.url}/#website`,
+      name: SITE.name,
+      url: SITE.url,
+      description: SITE.description,
+      about: { "@id": `${SITE.url}/#software` },
+    },
+  ],
+};
+const jsonLdText = JSON.stringify(jsonLd).replaceAll("</", "<\\/");
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta name="theme-color" content={SITE.themeColor} />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={SITE.ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={SITE.ogImage} />
+
+<script is:inline type="application/ld+json" set:html={jsonLdText} />

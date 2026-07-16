@@ -1,0 +1,28 @@
+---
+import Base from "../layouts/Base.astro";
+import { SITE } from "../lib/site";
+---
+
+<Base title="404 — Noeta" description="That page does not exist." path="/404">
+  <header class="site-head">
+    <div class="wrap">
+      <a class="wordmark" href="/">noeta<span class="tld">.dev</span></a>
+      <nav class="site-nav" aria-label="Site">
+        <a href={SITE.links.docs}>docs</a>
+        <a href={SITE.links.registry}>registry</a>
+        <a href={SITE.links.playground}>playground</a>
+        <a href={SITE.links.github}>github</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="hero wrap">
+      <p class="eyebrow reveal" style="--d: 0">E0404</p>
+      <h1 class="reveal" style="--d: 1">This state is <span class="human">unrepresentable.</span></h1>
+      <p class="dek reveal" style="--d: 2">The page you asked for doesn't compile. Head back to the start.</p>
+      <div class="cta-row reveal" style="--d: 3">
+        <a class="btn btn-primary" href="/">← noeta.dev</a>
+      </div>
+    </section>
+  </main>
+</Base>

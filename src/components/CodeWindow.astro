@@ -1,0 +1,35 @@
+---
+/* A terminal-chromed code window: filename bar, highlighted Noeta source, and
+ * an optional command footer with a live caret. */
+import { highlightNoeta } from "../lib/highlight";
+
+interface Props {
+  file: string;
+  code: string;
+  /** Shell line shown under the code, e.g. "noeta serve counter.noe --watch". */
+  command?: string;
+  class?: string;
+}
+
+const { file, code, command, class: className } = Astro.props;
+const html = highlightNoeta(code.trim());
+---
+
+<figure class:list={["code-window", className]}>
+  <div class="bar">
+    <span class="dot lit"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="file">{file}</span>
+  </div>
+  <pre><code set:html={html} /></pre>
+  {
+    command && (
+      <figcaption class="foot">
+        <span class="prompt">$</span>
+        <span>{command}</span>
+        <span class="caret" aria-hidden="true" />
+      </figcaption>
+    )
+  }
+</figure>
