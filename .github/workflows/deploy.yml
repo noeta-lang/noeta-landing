@@ -2,6 +2,10 @@ name: Build and deploy
 
 # Push to main → build the site (including the Playwright-rendered OG image)
 # and deploy the static assets to Cloudflare Workers.
+#
+# The design system is a sibling-checkout file: dependency
+# ("@noeta/theme": "file:../noeta-theme"), so the site is checked out into
+# site/ with the theme cloned next to it — the same shape as local disk.
 on:
   push:
     branches: [main]
@@ -11,23 +15,38 @@ concurrency:
   group: deploy
   cancel-in-progress: true
 
+defaults:
+  run:
+    working-directory: site
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
-      - name: Checkout
+      - name: Checkout site
         uses: actions/checkout@v6
+        with:
+          path: site
+
+      - name: Checkout @noeta/theme
+        uses: actions/checkout@v6
+        with:
+          repository: noeta-lang/noeta-theme
+          path: noeta-theme
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v6
+        with:
+          package_json_file: site/package.json
 
       - name: Set up Node
         uses: actions/setup-node@v6
         with:
           node-version: "22"
           cache: pnpm
+          cache-dependency-path: site/pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -37,7 +56,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-chromium-${{ hashFiles('pnpm-lock.yaml') }}
+          key: playwright-chromium-${{ hashFiles('site/pnpm-lock.yaml') }}
 
       - name: Install Chromium
         # `playwright-core` is what's in the lockfile, so this uses the CLI
@@ -53,4 +72,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: site
           command: deploy

@@ -6,12 +6,9 @@
  * Standalone document locked to the canvas. Fonts are the same self-hosted
  * Fontsource files as the site, so no network is needed; the script awaits
  * document.fonts.ready before capturing. Excluded from the sitemap. */
-import "@fontsource/instrument-serif/400.css";
-import "@fontsource/instrument-serif/400-italic.css";
-import "@fontsource-variable/hanken-grotesk";
-import "@fontsource-variable/spline-sans-mono";
-import "../styles/global.css";
-import { highlightNoeta } from "../lib/highlight";
+import "@noeta/theme/fonts.css";
+import "@noeta/theme/theme.css";
+import { highlightNoeta } from "@noeta/theme/highlight";
 
 const SNIPPET = `count = signal(0)
 

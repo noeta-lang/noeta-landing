@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@noeta/theme':
+        specifier: file:../noeta-theme
+        version: file:../noeta-theme
     devDependencies:
       '@astrojs/check':
         specifier: ^0.9.9
@@ -14,15 +18,6 @@ importers:
       '@astrojs/sitemap':
         specifier: ^3.7.3
         version: 3.7.3
-      '@fontsource-variable/hanken-grotesk':
-        specifier: ^5.2.8
-        version: 5.2.8
-      '@fontsource-variable/spline-sans-mono':
-        specifier: ^5.2.8
-        version: 5.2.8
-      '@fontsource/instrument-serif':
-        specifier: ^5.2.8
-        version: 5.2.8
       astro:
         specifier: ^7.0.9
         version: 7.0.9(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@24.13.3)(yaml@2.9.0)
@@ -914,6 +909,9 @@ packages:
     peerDependencies:
       '@emnapi/core': ^1.7.1
       '@emnapi/runtime': ^1.7.1
+
+  '@noeta/theme@file:../noeta-theme':
+    resolution: {directory: ../noeta-theme, type: directory}
 
   '@oslojs/encoding@1.1.0':
     resolution: {integrity: sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ==}
@@ -2872,6 +2870,12 @@ snapshots:
       '@emnapi/runtime': 1.11.2
       '@tybys/wasm-util': 0.10.3
     optional: true
+
+  '@noeta/theme@file:../noeta-theme':
+    dependencies:
+      '@fontsource-variable/hanken-grotesk': 5.2.8
+      '@fontsource-variable/spline-sans-mono': 5.2.8
+      '@fontsource/instrument-serif': 5.2.8
 
   '@oslojs/encoding@1.1.0': {}
 
