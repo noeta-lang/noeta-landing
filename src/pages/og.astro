@@ -18,7 +18,7 @@ const SNIPPET = `count = signal(0)
 fn page(): Html {
     return @html {
       <h1>count: \${count.get()}</h1>
-      <button data-live-click="inc">
+      <button \${on_click(fn() => count.update(fn(n) => n + 1))}>
         +1
       </button>
     }

@@ -13,13 +13,7 @@ fn page(): Html {
         <h1>Noeta LiveView counter</h1>
         <p>count: <b>\${count.get()}</b></p>
         <p>doubled: <b>\${count.get() * 2}</b></p>
-        <button data-live-click="inc">+1</button>
-    }
-}
-
-fn on_event(name: string): void {
-    if name == "inc" {
-        count.update(fn(n) => n + 1)
+        <button \${on_click(fn() => count.update(fn(n) => n + 1))}>+1</button>
     }
 }
 `;
