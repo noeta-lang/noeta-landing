@@ -57,7 +57,20 @@ const TOOLS = [
 <Base path="/">
   <header class="site-head">
     <div class="wrap">
-      <a class="wordmark" href="/">noeta<span class="tld">.dev</span></a>
+      <div class="brand">
+        <a class="wordmark" href="/">noeta<span class="tld">.dev</span></a>
+        {
+          SITE.version && (
+            <a
+              class="version-pill"
+              href={`${SITE.links.github}/releases/tag/${SITE.version}`}
+              title={`Noeta ${SITE.version}`}
+            >
+              {SITE.version}
+            </a>
+          )
+        }
+      </div>
       <nav class="site-nav" aria-label="Site">
         <a href={SITE.links.docs}>docs</a>
         <a href={SITE.links.registry}>registry</a>

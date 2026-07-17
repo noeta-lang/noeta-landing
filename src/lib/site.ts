@@ -12,6 +12,9 @@ export const SITE = {
   ogImage: "https://noeta.dev/images/og-image.png",
   themeColor: "#0b0d10",
   themeColorLight: "#f6f8fb",
+  /** The current Noeta release, baked in at build from NOETA_VERSION (the deploy workflow sets it to
+   *  the latest release tag). null on an unreleased build, so the UI omits the version. */
+  version: process.env.NOETA_VERSION ?? null,
   links: {
     docs: "https://docs.noeta.dev",
     registry: "https://registry.noeta.dev",
