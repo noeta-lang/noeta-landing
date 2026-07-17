@@ -1,6 +1,6 @@
-/* noeta.dev — landing-page layout. Tokens, chrome, and shared components come
- * from @noeta/theme (imported in the layout before this file); only the
- * sections specific to this page live here. */
+/* noeta.dev — landing-page layout. Tokens, chrome, fonts, and the shared
+ * components come from @noeta/theme (imported in the layout before this file);
+ * only the sections specific to this page live here. */
 
 /* --- hero ----------------------------------------------------------------------------- */
 
@@ -22,30 +22,29 @@
 }
 
 .hero h1 {
-  margin: 1.1rem 0 0;
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(3rem, 7.4vw, 5.4rem);
-  line-height: 1.02;
-  letter-spacing: -0.012em;
+  margin: 1.2rem 0 0;
+  font-family: var(--font-body);
+  font-weight: 680;
+  font-size: clamp(2.8rem, 6.6vw, 4.6rem);
+  line-height: 1.04;
+  letter-spacing: -0.038em;
 }
 
 .hero h1 .human {
-  font-style: italic;
-  color: var(--signal);
+  color: var(--accent);
 }
 
 .hero .dek {
   margin-top: 1.4rem;
   max-width: 34rem;
-  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
-  color: var(--paper-1);
+  font-size: clamp(1.05rem, 1.6vw, 1.18rem);
+  color: var(--text-1);
   line-height: 1.6;
 }
 
 .hero .dek strong {
-  color: var(--paper-0);
-  font-weight: 500;
+  color: var(--text-0);
+  font-weight: 600;
 }
 
 .cta-row {
@@ -58,17 +57,18 @@
 .hero-note {
   margin-top: 1.5rem;
   font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  color: var(--paper-2);
+  font-size: 0.8rem;
+  color: var(--text-2);
 }
 
 .hero-note a {
-  color: var(--paper-1);
-  border-bottom: 1px dotted var(--paper-2);
+  color: var(--text-1);
+  border-bottom: 1px solid var(--line-strong);
 }
 
 .hero-note a:hover {
-  color: var(--signal-bright);
+  color: var(--accent-bright);
+  border-color: var(--accent);
 }
 
 /* --- principles ------------------------------------------------------------------------ */
@@ -85,24 +85,24 @@
   }
 }
 
-/* pull quote */
 .pull {
   margin: clamp(3rem, 7vh, 4.5rem) auto 0;
-  max-width: 46rem;
+  max-width: 48rem;
   text-align: center;
 }
 
 .pull blockquote {
   margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3.2vw, 2.2rem);
-  line-height: 1.28;
-  font-style: italic;
-  color: var(--paper-0);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  line-height: 1.32;
+  letter-spacing: -0.02em;
+  color: var(--text-0);
 }
 
 .pull blockquote .accent {
-  color: var(--signal);
+  color: var(--accent);
 }
 
 .pull cite {
@@ -110,10 +110,10 @@
   margin-top: 0.9rem;
   font-family: var(--font-mono);
   font-style: normal;
-  font-size: 0.8rem;
-  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--paper-2);
+  color: var(--text-2);
 }
 
 /* --- tooling grid ---------------------------------------------------------------------- */
@@ -140,25 +140,25 @@
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 1.15rem 1.2rem;
-  background: color-mix(in srgb, var(--ink-1) 60%, transparent);
+  background: color-mix(in srgb, var(--surface-1) 55%, transparent);
   transition: border-color 200ms ease, background 200ms ease;
 }
 
 .tool:hover {
   border-color: var(--line-strong);
-  background: color-mix(in srgb, var(--ink-1) 90%, transparent);
+  background: color-mix(in srgb, var(--surface-1) 90%, transparent);
 }
 
 .tool .cmd {
   font-family: var(--font-mono);
-  font-size: 0.9rem;
-  color: var(--signal-bright);
+  font-size: 0.88rem;
+  color: var(--accent-2-bright);
 }
 
 .tool p {
   margin-top: 0.45rem;
   font-size: 0.92rem;
-  color: var(--paper-1);
+  color: var(--text-1);
 }
 
 .tool-note {
@@ -167,18 +167,19 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 0.9rem 1.4rem;
-  border: 1px dashed var(--line-strong);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 1.05rem 1.25rem;
-  color: var(--paper-1);
+  color: var(--text-1);
   font-size: 0.95rem;
+  background: color-mix(in srgb, var(--surface-1) 40%, transparent);
 }
 
 .tool-note .snippet {
   font-family: var(--font-mono);
   font-size: 0.85rem;
-  color: var(--paper-0);
-  background: var(--ink-2);
+  color: var(--text-0);
+  background: var(--surface-2);
   border: 1px solid var(--line);
   border-radius: 7px;
   padding: 0.45rem 0.8rem;
@@ -186,7 +187,7 @@
 }
 
 .tool-note .snippet .prompt {
-  color: var(--signal);
+  color: var(--accent-2);
 }
 
 /* --- ship targets ----------------------------------------------------------------------- */
@@ -222,24 +223,24 @@
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 1rem 1.2rem;
-  background: color-mix(in srgb, var(--ink-1) 60%, transparent);
+  background: color-mix(in srgb, var(--surface-1) 55%, transparent);
   transition: border-color 200ms ease;
 }
 
 .target:hover {
-  border-color: rgba(230, 159, 55, 0.35);
+  border-color: color-mix(in srgb, var(--accent) 42%, transparent);
 }
 
 .target .cmd {
   font-family: var(--font-mono);
-  font-size: 0.86rem;
-  color: var(--signal-bright);
+  font-size: 0.84rem;
+  color: var(--accent-2-bright);
   white-space: nowrap;
 }
 
 .target p {
-  font-size: 0.94rem;
-  color: var(--paper-1);
+  font-size: 0.93rem;
+  color: var(--text-1);
 }
 
 @media (max-width: 38rem) {
@@ -271,12 +272,12 @@
   display: block;
   margin-top: 1.1rem;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--signal);
+  font-size: 0.78rem;
+  color: var(--accent);
 }
 
 .eco .card .dest::after {
-  content: " ↗";
+  content: " →";
 }
 
 @media (prefers-reduced-motion: reduce) {

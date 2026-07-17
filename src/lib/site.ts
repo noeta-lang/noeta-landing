@@ -10,7 +10,8 @@ export const SITE = {
     "as single binaries — web, desktop, or service — with a type system that makes illegal " +
     "states unrepresentable. LSP, DAP, MCP, and a formatter, all out of one binary.",
   ogImage: "https://noeta.dev/images/og-image.png",
-  themeColor: "#131110",
+  themeColor: "#0b0d10",
+  themeColorLight: "#f6f8fb",
   links: {
     docs: "https://docs.noeta.dev",
     registry: "https://registry.noeta.dev",
