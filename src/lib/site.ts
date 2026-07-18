@@ -6,9 +6,9 @@ export const SITE = {
   url: "https://noeta.dev",
   title: "Noeta — an AI-native, human-first programming language",
   description:
-    "Noeta is an AI-native, human-first programming language for shipping reactive applications " +
-    "as single binaries — web, desktop, or service — with a type system that makes illegal " +
-    "states unrepresentable. LSP, DAP, MCP, and a formatter, all out of one binary.",
+    "Noeta is an AI-native, human-first, general-purpose language that makes machine-written code " +
+    "checkable and human-readable — strong static types, an agent-native toolchain, single-binary " +
+    "output. LSP, DAP, MCP, and a formatter, all out of one binary.",
   ogImage: "https://noeta.dev/images/og-image.png",
   themeColor: "#0b0d10",
   themeColorLight: "#f6f8fb",
