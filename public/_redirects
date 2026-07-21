@@ -1,0 +1,18 @@
+# Friendly path → canonical subdomain redirects, served by the landing Worker's
+# static-assets layer (same mechanism as _headers). Each property lives on its
+# own subdomain; these paths are conveniences that send visitors (and link
+# equity) to the canonical host. 301 = permanent: the subdomain IS the home.
+#
+# Format: <source> <destination> <status>. The bare path redirects to the
+# subdomain root; the /* rule preserves any sub-path via :splat, so deep links
+# survive (noeta.dev/docs/reactivity → docs.noeta.dev/reactivity). First match
+# wins, so the exact path precedes its wildcard.
+
+/docs             https://docs.noeta.dev/          301
+/docs/*           https://docs.noeta.dev/:splat    301
+
+/playground       https://play.noeta.dev/          301
+/playground/*     https://play.noeta.dev/:splat    301
+
+/registry         https://registry.noeta.dev/      301
+/registry/*       https://registry.noeta.dev/:splat 301
