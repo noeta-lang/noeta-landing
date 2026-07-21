@@ -2,11 +2,12 @@
   // noeta-landing Worker — served at noeta.dev. A static-assets Worker: the Astro
   // build output in dist/ is served directly by Cloudflare (no Worker script).
   //   pnpm run deploy
-  // To bind the custom domain, add a route once the zone is on Cloudflare:
-  //   "routes": [{ "pattern": "noeta.dev", "custom_domain": true }]
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "noeta-landing",
   "compatibility_date": "2025-07-01",
+  // Custom domain: wrangler manages the DNS record for the apex itself — do not
+  // add a CNAME by hand.
+  "routes": [{ "pattern": "noeta.dev", "custom_domain": true }],
   "assets": {
     "directory": "./dist",
     // Marketing site: unknown paths fall through to Astro's 404 page.
