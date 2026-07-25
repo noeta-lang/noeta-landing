@@ -16,3 +16,7 @@
 
 /registry         https://registry.noeta.dev/      301
 /registry/*       https://registry.noeta.dev/:splat 301
+
+# The one-line installer: `curl -fsSL https://noeta.dev/install | sh`. 302, not 301 —
+# the script's canonical home (raw GitHub today) is an implementation detail that may move.
+/install          https://raw.githubusercontent.com/noeta-lang/noeta/main/install.sh 302
