@@ -6,6 +6,8 @@ import "@noeta/theme/fonts.css";
 import "@noeta/theme/theme.css";
 import "../styles/global.css";
 import BaseHead from "../components/BaseHead.astro";
+import { renderHeader, renderFooter, DRAWER_SCRIPT } from "@noeta/theme/chrome";
+import { SITE } from "../lib/site";
 
 interface Props {
   title?: string;
@@ -23,6 +25,9 @@ const { title, description, path } = Astro.props;
   </head>
   <body>
     <div class="field" aria-hidden="true"></div>
+    <Fragment set:html={renderHeader({ site: "home", version: SITE.version })} />
     <slot />
+    <Fragment set:html={renderFooter({ site: "home" })} />
+    <script is:inline set:html={DRAWER_SCRIPT} />
   </body>
 </html>
