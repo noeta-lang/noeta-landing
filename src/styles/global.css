@@ -15,9 +15,12 @@
   align-items: center;
 }
 
+/* minmax(0, 1fr), not 1fr: a bare 1fr keeps min-width:auto, so the single
+ * column floors at the code window's min-content (~703px) and drags the whole
+ * page past the viewport on phones. */
 @media (max-width: 62rem) {
   .hero-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -184,6 +187,11 @@
   border-radius: 7px;
   padding: 0.45rem 0.8rem;
   white-space: nowrap;
+  /* The command stays on one line to keep it copy-pasteable. As a flex item it
+   * needs min-width:0 to shrink below that line, and then scrolls inside its
+   * own box rather than pushing the page sideways on narrow phones. */
+  min-width: 0;
+  overflow-x: auto;
 }
 
 .tool-note .snippet .prompt {
