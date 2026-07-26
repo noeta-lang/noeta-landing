@@ -11,7 +11,7 @@
  * sitemap. */
 import "@noeta/theme/fonts.css";
 import "@noeta/theme/theme.css";
-import { highlightNoeta } from "@noeta/theme/highlight";
+import { highlightNoeta } from "../lib/noeta-highlight.mjs";
 
 const SNIPPET = `count = signal(0)
 
@@ -23,7 +23,7 @@ fn page(): Html {
       </button>
     }
 }`;
-const code = highlightNoeta(SNIPPET);
+const code = await highlightNoeta(SNIPPET);
 ---
 
 <!doctype html>

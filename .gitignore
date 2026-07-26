@@ -5,3 +5,5 @@ dist/
 .dev.vars
 .DS_Store
 .astro/
+syntaxes/
+.noeta-grammar.tmp/

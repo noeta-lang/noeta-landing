@@ -1,7 +1,10 @@
 ---
 /* A terminal-chromed code window: filename bar, highlighted Noeta source, and
- * an optional command footer with a live caret. */
-import { highlightNoeta } from "@noeta/theme/highlight";
+ * an optional command footer with a live caret. Highlighting runs at build
+ * time through the canonical TextMate grammar (src/lib/noeta-highlight.mjs);
+ * the helper returns inner spans only, so the pre/code chrome below and the
+ * .code-window styles in theme.css are unchanged. */
+import { highlightNoeta } from "../lib/noeta-highlight.mjs";
 
 interface Props {
   file: string;
@@ -12,7 +15,7 @@ interface Props {
 }
 
 const { file, code, command, class: className } = Astro.props;
-const html = highlightNoeta(code.trim());
+const html = await highlightNoeta(code.trim());
 ---
 
 <figure class:list={["code-window", className]}>
